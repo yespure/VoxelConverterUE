@@ -1,69 +1,27 @@
 # =========================================================
-# Unreal Engine
+# Git LFS
 # =========================================================
 
-Binaries/
-DerivedDataCache/
-Intermediate/
-Saved/
+# Unreal Engine assets
+*.uasset filter=lfs diff=lfs merge=lfs -text
+*.umap filter=lfs diff=lfs merge=lfs -text
 
-# Unreal build output
-Build/
+# Large 3D assets
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.obj filter=lfs diff=lfs merge=lfs -text
+*.abc filter=lfs diff=lfs merge=lfs -text
 
-# =========================================================
-# Visual Studio
-# =========================================================
+# Houdini / Voxel assets
+*.vdb filter=lfs diff=lfs merge=lfs -text
+*.bgeo filter=lfs diff=lfs merge=lfs -text
+*.bgeo.sc filter=lfs diff=lfs merge=lfs -text
 
-.vs/
-.vscode/
-.idea/
+# Large textures / HDR
+*.exr filter=lfs diff=lfs merge=lfs -text
+*.tif filter=lfs diff=lfs merge=lfs -text
+*.tiff filter=lfs diff=lfs merge=lfs -text
 
-*.suo
-*.user
-*.userprefs
-
-# Visual Studio generated databases / caches
-*.VC.db
-*.VC.opendb
-*.sdf
-*.opensdf
-*.ipch
-*.pdb
-*.obj
-*.ilk
-*.pch
-
-# =========================================================
-# Rider
-# =========================================================
-
-.idea/
-*.sln.iml
-
-# =========================================================
-# Unreal generated files
-# =========================================================
-
-*.tmp
-*.log
-
-# =========================================================
-# OS generated files
-# =========================================================
-
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# =========================================================
-# Node / Web tooling (if any)
-# =========================================================
-
-node_modules/
-
-# =========================================================
-# Python cache (if any)
-# =========================================================
-
-__pycache__/
-*.pyc
+# Large archives
+# Only keep these if you actually need them in the repository.
+# *.zip filter=lfs diff=lfs merge=lfs -text
+# *.7z filter=lfs diff=lfs merge=lfs -text
