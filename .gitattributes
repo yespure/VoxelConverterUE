@@ -1,6 +1,69 @@
-# Auto detect text files and perform LF normalization
-* text=auto
-*db filter=lfs diff=lfs merge=lfs -text
-*.db filter=lfs diff=lfs merge=lfs -text
-*.ipch filter=lfs diff=lfs merge=lfs -text
-*.pch filter=lfs diff=lfs merge=lfs -text
+# =========================================================
+# Unreal Engine
+# =========================================================
+
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# Unreal build output
+Build/
+
+# =========================================================
+# Visual Studio
+# =========================================================
+
+.vs/
+.vscode/
+.idea/
+
+*.suo
+*.user
+*.userprefs
+
+# Visual Studio generated databases / caches
+*.VC.db
+*.VC.opendb
+*.sdf
+*.opensdf
+*.ipch
+*.pdb
+*.obj
+*.ilk
+*.pch
+
+# =========================================================
+# Rider
+# =========================================================
+
+.idea/
+*.sln.iml
+
+# =========================================================
+# Unreal generated files
+# =========================================================
+
+*.tmp
+*.log
+
+# =========================================================
+# OS generated files
+# =========================================================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================================================
+# Node / Web tooling (if any)
+# =========================================================
+
+node_modules/
+
+# =========================================================
+# Python cache (if any)
+# =========================================================
+
+__pycache__/
+*.pyc
