@@ -599,6 +599,7 @@ void UTerrainVoxelLibrary::ScanAllCameras(
         CaptureComponents
     );
 
+
     if (CaptureComponents.Num() == 0)
     {
         if (GEngine)
@@ -607,59 +608,142 @@ void UTerrainVoxelLibrary::ScanAllCameras(
                 -1,
                 5.0f,
                 FColor::Red,
-                TEXT("ScanAllCameras: No cameras found")
+                TEXT("ScanAllCameras: No SceneCaptureComponents found")
             );
         }
 
         return;
     }
 
-    int32 ValidCameraCount = 0;
 
-    for (USceneCaptureComponent2D* Capture :
-        CaptureComponents)
+    USceneCaptureComponent2D* DepthCapture = nullptr;
+    USceneCaptureComponent2D* ColorCapture = nullptr;
+    USceneCaptureComponent2D* NormalCapture = nullptr;
+    USceneCaptureComponent2D* MaterialCapture = nullptr;
+
+
+    for (USceneCaptureComponent2D* Capture : CaptureComponents)
     {
         if (!Capture)
         {
             continue;
         }
 
-        Capture->TextureTarget =
-            DepthRenderTarget;
 
-        Capture->CaptureScene();
+        UTextureRenderTarget2D* Target =
+            Capture->TextureTarget;
 
-        TArray<FVoxelSamplePoint>
-            CameraPoints;
 
-        DrawDepthPointCloud(
-            Capture,
-            DepthRenderTarget,
-            ColorRenderTarget,
-            NormalRenderTarget,
-            MaterialRenderTarget,
-            PixelStep,
-            PointSize,
-            Duration,
-            MaximumDepth,
-            CameraPoints
-        );
-
-        OutPoints.Append(
-            CameraPoints
-        );
-
-        ValidCameraCount++;
+        if (Target == DepthRenderTarget)
+        {
+            DepthCapture = Capture;
+        }
+        else if (Target == ColorRenderTarget)
+        {
+            ColorCapture = Capture;
+        }
+        else if (Target == NormalRenderTarget)
+        {
+            NormalCapture = Capture;
+        }
+        else if (Target == MaterialRenderTarget)
+        {
+            MaterialCapture = Capture;
+        }
     }
+
+
+    if (!DepthCapture)
+    {
+        if (GEngine)
+        {
+            GEngine->AddOnScreenDebugMessage(
+                -1,
+                5.0f,
+                FColor::Red,
+                TEXT("ScanAllCameras: DepthCapture not found")
+            );
+        }
+
+        return;
+    }
+
+
+    if (GEngine)
+    {
+        FString Message = FString::Printf(
+            TEXT(
+                "Captures Found | Depth=%s Color=%s Normal=%s Material=%s"
+            ),
+            DepthCapture ? TEXT("YES") : TEXT("NO"),
+            ColorCapture ? TEXT("YES") : TEXT("NO"),
+            NormalCapture ? TEXT("YES") : TEXT("NO"),
+            MaterialCapture ? TEXT("YES") : TEXT("NO")
+        );
+
+        GEngine->AddOnScreenDebugMessage(
+            -1,
+            5.0f,
+            FColor::Cyan,
+            Message
+        );
+    }
+
+    if (DepthCapture)
+    {
+        DepthCapture->CaptureScene();
+    }
+
+    if (ColorCapture)
+    {
+        ColorCapture->CaptureScene();
+    }
+
+    if (NormalCapture)
+    {
+        NormalCapture->CaptureScene();
+    }
+
+    if (MaterialCapture)
+    {
+        MaterialCapture->CaptureScene();
+    }
+
+
+    TArray<FVoxelSamplePoint> CameraPoints;
+
+    DrawDepthPointCloud(
+        DepthCapture,
+        DepthRenderTarget,
+        ColorRenderTarget,
+        NormalRenderTarget,
+        MaterialRenderTarget,
+        PixelStep,
+        PointSize,
+        Duration,
+        MaximumDepth,
+        CameraPoints
+    );
+
+
+    OutPoints.Append(
+        CameraPoints
+    );
+
 
     if (GEngine)
     {
         const FString Message =
             FString::Printf(
                 TEXT(
-                    "Multi Camera Scan SUCCESS | Cameras=%d | Points=%d"
+                    "Multi Capture SUCCESS | "
+                    "Depth=%s | Color=%s | Normal=%s | Material=%s | "
+                    "Points=%d"
                 ),
-                ValidCameraCount,
+                DepthCapture ? TEXT("OK") : TEXT("MISSING"),
+                ColorCapture ? TEXT("OK") : TEXT("MISSING"),
+                NormalCapture ? TEXT("OK") : TEXT("MISSING"),
+                MaterialCapture ? TEXT("OK") : TEXT("MISSING"),
                 OutPoints.Num()
             );
 
@@ -671,6 +755,7 @@ void UTerrainVoxelLibrary::ScanAllCameras(
         );
     }
 }
+
 
 void UTerrainVoxelLibrary::DeduplicateVoxelSamplePoints(
     const TArray<FVoxelSamplePoint>& InPoints,
