@@ -59,6 +59,7 @@ public:
         int32 PixelStep,
         float PointSize,
         float Duration,
+        float MaximumDepth,
         TArray<FVoxelSamplePoint>& OutPoints
     );
 
@@ -72,6 +73,7 @@ public:
         int32 PixelStep,
         float PointSize,
         float Duration,
+        float MaximumDepth,
         TArray<FVoxelSamplePoint>& OutPoints
     );
 

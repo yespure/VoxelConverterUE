@@ -254,6 +254,7 @@ void UTerrainVoxelLibrary::DrawDepthPointCloud(
     int32 PixelStep,
     float PointSize,
     float Duration,
+    float MaximumDepth,
     TArray<FVoxelSamplePoint>& OutPoints
 )
 {
@@ -440,7 +441,8 @@ void UTerrainVoxelLibrary::DrawDepthPointCloud(
                 DepthPixels[PixelIndex].R;
 
             if (!FMath::IsFinite(Depth) ||
-                Depth <= 0.0f)
+                Depth <= 0.0f ||
+                Depth > MaximumDepth)
             {
                 continue;
             }
@@ -555,6 +557,7 @@ void UTerrainVoxelLibrary::ScanAllCameras(
     int32 PixelStep,
     float PointSize,
     float Duration,
+    float MaximumDepth,
     TArray<FVoxelSamplePoint>& OutPoints
 )
 {
@@ -638,6 +641,7 @@ void UTerrainVoxelLibrary::ScanAllCameras(
             PixelStep,
             PointSize,
             Duration,
+            MaximumDepth,
             CameraPoints
         );
 
